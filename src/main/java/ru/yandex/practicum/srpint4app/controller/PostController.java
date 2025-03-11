@@ -36,8 +36,9 @@ public class PostController {
     }
 
     @GetMapping(value = "/{id}/like", produces = MediaType.TEXT_HTML_VALUE)
-    public String getPostById(@PathVariable Integer id) {
-        postService.likePost(id);
+    public String likePostById(@PathVariable Integer id, Model model) {
+        PostDto post = postService.likePost(id);
+        model.addAttribute("post", post);
         return "posts/detail";
     }
 

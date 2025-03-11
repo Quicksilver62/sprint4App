@@ -10,7 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.yandex.practicum.srpint4app.dto.CommentDto;
+import ru.yandex.practicum.srpint4app.dto.PostDto;
 import ru.yandex.practicum.srpint4app.dto.PostPreviewDto;
+import ru.yandex.practicum.srpint4app.dto.TagDto;
 import ru.yandex.practicum.srpint4app.service.PostService;
 
 import java.time.LocalDateTime;
@@ -44,7 +47,26 @@ public class PostControllerTest {
                         .build()
         );
 
+        var post = PostDto.builder()
+                .id(1)
+                .title("My First Post")
+                .body("This is the content of my first post.")
+                .picture("https://example.com/image.jpg")
+                .likesCount(10)
+                .commentsCount(List.of(
+                        new CommentDto(1, "Great post!", "Alice"),
+                        new CommentDto(2, "I learned a lot.", "Bob")
+                ))
+                .tags(List.of(
+                        new TagDto(1, "Spring Boot"),
+                        new TagDto(2, "Thymeleaf")
+                ))
+                .createdAt(LocalDateTime.now())
+                .build();
+
         when(postService.getAllPosts(Pageable.ofSize(10))).thenReturn(new SliceImpl<>(posts));
+        when(postService.getPostById(1)).thenReturn(post);
+        when(postService.likePost(1)).thenReturn(post);
     }
 
     @Test

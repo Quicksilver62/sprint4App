@@ -69,9 +69,11 @@ public class PostService {
     postRepository.deleteById(id);
   }
 
-    public void likePost(Integer id) {
+    public PostDto likePost(Integer id) {
         var dbPost = postRepository.findById(id).orElseThrow();
         dbPost.setLikesCount(dbPost.getLikesCount() + 1);
+        postRepository.save(dbPost);
+        return getPostById(id);
     }
 
     private void updatePost(DbPost dbPost, PostDto postDto) {
