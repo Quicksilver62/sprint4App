@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: srpint4App
+
+  profiles:
+    active: dev
